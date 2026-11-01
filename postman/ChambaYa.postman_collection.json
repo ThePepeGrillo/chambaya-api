@@ -1,0 +1,1407 @@
+{
+  "info": {
+    "name": "ChambaYa API - Taller 3",
+    "description": "Ejecuta las carpetas 1, 2 y 3 en orden (Collection Runner) con el servidor encendido. La carpeta 4 contiene el endpoint solo documentado.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api/v1"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Auth",
+      "item": [
+        {
+          "name": "Registrar empleador",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set(\"correoEmpleador\", `empleador_${Date.now()}@mail.com`);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 201\", () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Restaurante El Sol\",\n  \"correo\": \"{{correoEmpleador}}\",\n  \"password\": \"123456\",\n  \"rol\": \"empleador\",\n  \"nit\": \"900123456\",\n  \"direccion\": \"Cra 7 # 45-10\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Registrar trabajador 1",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set(\"correoTrabajador\", `ana_${Date.now()}@mail.com`);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 201\", () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Ana Gómez\",\n  \"correo\": \"{{correoTrabajador}}\",\n  \"password\": \"123456\",\n  \"rol\": \"trabajador\",\n  \"habilidades\": [\n    \"mesero\",\n    \"cocina\"\n  ],\n  \"disponibilidad\": \"Fines de semana\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Registrar trabajador 2",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set(\"correoTrabajador2\", `luis_${Date.now()}@mail.com`);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 201\", () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Luis Pérez\",\n  \"correo\": \"{{correoTrabajador2}}\",\n  \"password\": \"123456\",\n  \"rol\": \"trabajador\",\n  \"habilidades\": [\n    \"cargador\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Registrar con correo duplicado (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 409\", () => pm.response.to.have.status(409));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Repetido\",\n  \"correo\": \"{{correoEmpleador}}\",\n  \"password\": \"123456\",\n  \"rol\": \"empleador\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Registrar con datos inválidos (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 400\", () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"X\",\n  \"correo\": \"no-es-correo\",\n  \"password\": \"1\",\n  \"rol\": \"otro\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Login empleador",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 200\", () => pm.response.to.have.status(200));",
+                  "pm.collectionVariables.set(\"tokenEmpleador\", pm.response.json().token);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"{{correoEmpleador}}\",\n  \"password\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Login trabajador 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 200\", () => pm.response.to.have.status(200));",
+                  "pm.collectionVariables.set(\"tokenTrabajador\", pm.response.json().token);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"{{correoTrabajador}}\",\n  \"password\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Login trabajador 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 200\", () => pm.response.to.have.status(200));",
+                  "pm.collectionVariables.set(\"tokenTrabajador2\", pm.response.json().token);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"{{correoTrabajador2}}\",\n  \"password\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Login con contraseña incorrecta (401)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 401\", () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"{{correoEmpleador}}\",\n  \"password\": \"incorrecta\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Ofertas",
+      "item": [
+        {
+          "name": "Crear oferta sin token (401)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set(\"fechaFutura\", new Date(Date.now() + 5 * 86400000).toISOString());"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 401\", () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Meseros fin de semana\",\n  \"tipo\": \"mesero\",\n  \"descripcion\": \"Evento de 100 personas, se necesita mesero con experiencia\",\n  \"fecha\": \"{{fechaFutura}}\",\n  \"duracionHoras\": 6,\n  \"pago\": 80000,\n  \"ubicacion\": \"Chapinero, Bogotá\",\n  \"cupos\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ofertas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ofertas"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear oferta como trabajador (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 403\", () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenTrabajador}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Meseros fin de semana\",\n  \"tipo\": \"mesero\",\n  \"descripcion\": \"Evento de 100 personas, se necesita mesero con experiencia\",\n  \"fecha\": \"{{fechaFutura}}\",\n  \"duracionHoras\": 6,\n  \"pago\": 80000,\n  \"ubicacion\": \"Chapinero, Bogotá\",\n  \"cupos\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ofertas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ofertas"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear oferta con campos faltantes (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 400\", () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenEmpleador}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Incompleta\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ofertas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ofertas"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear oferta (201)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 201\", () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set(\"ofertaId\", pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenEmpleador}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Meseros fin de semana\",\n  \"tipo\": \"mesero\",\n  \"descripcion\": \"Evento de 100 personas, se necesita mesero con experiencia\",\n  \"fecha\": \"{{fechaFutura}}\",\n  \"duracionHoras\": 6,\n  \"pago\": 80000,\n  \"ubicacion\": \"Chapinero, Bogotá\",\n  \"cupos\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ofertas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ofertas"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar ofertas",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ofertas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ofertas"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar ofertas con filtros",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ofertas?tipo=mesero&ubicacion=chapinero&page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ofertas"
+              ],
+              "query": [
+                {
+                  "key": "tipo",
+                  "value": "mesero"
+                },
+                {
+                  "key": "ubicacion",
+                  "value": "chapinero"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar ofertas sin resultados (sugerencia)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Incluye sugerencia\", () => pm.expect(pm.response.json().sugerencia).to.be.a(\"string\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ofertas?tipo=inexistente",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ofertas"
+              ],
+              "query": [
+                {
+                  "key": "tipo",
+                  "value": "inexistente"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar ofertas con parámetro inválido (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 400\", () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ofertas?limit=0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ofertas"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "0"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Detalle de oferta",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ofertas/{{ofertaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ofertas",
+                "{{ofertaId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Detalle de oferta inexistente (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 404\", () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ofertas/o-9999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ofertas",
+                "o-9999"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Postulaciones y cupos",
+      "item": [
+        {
+          "name": "Postularse (trabajador 1)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 201\", () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set(\"postulacionId\", pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenTrabajador}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ofertas/{{ofertaId}}/postulaciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ofertas",
+                "{{ofertaId}}",
+                "postulaciones"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Postularse otra vez (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 409\", () => pm.response.to.have.status(409));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenTrabajador}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ofertas/{{ofertaId}}/postulaciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ofertas",
+                "{{ofertaId}}",
+                "postulaciones"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Postularse (trabajador 2)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 201\", () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set(\"postulacionId2\", pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenTrabajador2}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ofertas/{{ofertaId}}/postulaciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ofertas",
+                "{{ofertaId}}",
+                "postulaciones"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Empleador ve los postulantes",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenEmpleador}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ofertas/{{ofertaId}}/postulaciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ofertas",
+                "{{ofertaId}}",
+                "postulaciones"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Trabajador intenta ver postulantes (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 403\", () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenTrabajador}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ofertas/{{ofertaId}}/postulaciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ofertas",
+                "{{ofertaId}}",
+                "postulaciones"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Aceptar postulación 1 (oferta pasa a cubierta)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Oferta cubierta\", () => pm.expect(pm.response.json().oferta.estado).to.eql(\"cubierta\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenEmpleador}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estado\": \"aceptada\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/postulaciones/{{postulacionId}}/estado",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "postulaciones",
+                "{{postulacionId}}",
+                "estado"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Aceptar postulación 2 con cupos completos (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 409\", () => pm.response.to.have.status(409));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenEmpleador}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estado\": \"aceptada\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/postulaciones/{{postulacionId2}}/estado",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "postulaciones",
+                "{{postulacionId2}}",
+                "estado"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Estado inválido (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 400\", () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenEmpleador}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estado\": \"quizas\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/postulaciones/{{postulacionId2}}/estado",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "postulaciones",
+                "{{postulacionId2}}",
+                "estado"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Detalle de oferta (cubierta)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ofertas/{{ofertaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ofertas",
+                "{{ofertaId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar ofertas (la cubierta ya no aparece)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ofertas?tipo=mesero",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ofertas"
+              ],
+              "query": [
+                {
+                  "key": "tipo",
+                  "value": "mesero"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Cancelar postulación aceptada (reabre la oferta)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenTrabajador}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"motivo\": \"Imprevisto familiar\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/postulaciones/{{postulacionId}}/cancelar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "postulaciones",
+                "{{postulacionId}}",
+                "cancelar"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Cancelar sin motivo (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 400\", () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenTrabajador2}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/postulaciones/{{postulacionId2}}/cancelar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "postulaciones",
+                "{{postulacionId2}}",
+                "cancelar"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Detalle de oferta (abierta otra vez)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Oferta abierta\", () => pm.expect(pm.response.json().estado).to.eql(\"abierta\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ofertas/{{ofertaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ofertas",
+                "{{ofertaId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Rechazar postulación 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenEmpleador}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estado\": \"rechazada\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/postulaciones/{{postulacionId2}}/estado",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "postulaciones",
+                "{{postulacionId2}}",
+                "estado"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Solo documentado (no implementado)",
+      "item": [
+        {
+          "name": "10. Calificar (POST)",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenEmpleador}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"puntaje\": 5,\n  \"comentario\": \"Excelente trabajo\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/postulaciones/{{postulacionId}}/calificaciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "postulaciones",
+                "{{postulacionId}}",
+                "calificaciones"
+              ]
+            },
+            "description": "NO IMPLEMENTADO: este endpoint solo está documentado en el inventario; el servidor responde 404 o 405."
+          }
+        }
+      ]
+    }
+  ]
+}
