@@ -1,10 +1,8 @@
-# ChambaYa API
-
-Backend de ChambaYa, una plataforma para conseguir trabajos temporales: los empleadores publican ofertas y los trabajadores se postulan a ellas.
+TALLER 3
 
 Está hecha en Node.js con TypeScript y sin base de datos. Todo se guarda en arrays en memoria, los datos se borran cada vez que se reinicia el servidor.
 
-## Cómo correrla
+Cómo correrla
 
 Hace falta Node.js 18 o superior.
 
@@ -25,7 +23,7 @@ Scripts disponibles:
 
 Dependencias: ninguna para correr el proyecto (solo se usan módulos de Node). Para desarrollo se usan `typescript`, `tsx` y `@types/node`.
 
-## Endpoints
+Endpoints
 
 Implementados:
 
@@ -46,14 +44,14 @@ Solo documentado, sin implementar:
 ```
 POST   /api/v1/postulaciones/:id/calificaciones   calificar al terminar el trabajo
 ```
-## Reglas
+Reglas
 
 - Una oferta necesita título, tipo, descripción, fecha futura, duración, pago, ubicación y cupos.
 - No se pueden aceptar más postulantes que cupos. Cuando se llenan, la oferta pasa a "cubierta" y deja de salir en la lista.
 - Si alguien aceptado cancela, la oferta se vuelve a abrir. Si faltaban menos de 24 horas, queda como cancelación tardía.
 - Las contraseñas se guardan con hash.
 
-## Pruebas
+Pruebas
 
 Las pruebas están en una colección de Postman: postman/ChambaYa.postman_collection.json.
 
